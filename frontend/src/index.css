@@ -104,35 +104,43 @@
 }
 
 /* Beautiful responsive comparison tables */
-.markdown-content table {
+.markdown-table-wrapper {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  overflow-x: auto;
   margin: 1.25rem 0;
   border-radius: 0.75rem;
-  overflow: hidden;
   border: 1px solid rgba(51, 65, 85, 0.7);
   background: rgba(15, 23, 42, 0.6);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.markdown-content table {
+  width: 100%;
+  min-width: 650px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+}
+
 .markdown-content th {
   background: #1e293b;
   color: #38bdf8;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.85rem;
   text-align: left;
   border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+  white-space: nowrap;
 }
 
 .markdown-content td {
-  padding: 0.65rem 1rem;
-  font-size: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.825rem;
   color: #e2e8f0;
   border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+  white-space: nowrap;
 }
 
 .markdown-content tr:last-child td {
