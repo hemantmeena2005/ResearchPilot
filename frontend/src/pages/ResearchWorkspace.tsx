@@ -248,7 +248,7 @@ export const ResearchWorkspace: React.FC = () => {
                 </div>
 
                 {/* Markdown Answer */}
-                <div className="prose prose-invert prose-sm max-w-none text-slate-200 leading-relaxed">
+                <div className="markdown-content">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {activeSession.answer}
                   </ReactMarkdown>
