@@ -18,7 +18,7 @@ export const DocumentLibrary: React.FC = () => {
   const [search, setSearch] = useState('');
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const { data: documents = [], isLoading } = useQuery({
+  const { data: documents = [], isLoading, isError, error, refetch } = useQuery({
     queryKey: ['documents'],
     queryFn: api.getDocuments,
   });
@@ -111,8 +111,23 @@ export const DocumentLibrary: React.FC = () => {
 
       {/* Documents Grid / Table */}
       {isLoading ? (
-        <div className="flex items-center justify-center p-16">
-          <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+        <div className="flex flex-col items-center justify-center p-16 space-y-3">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+          <p className="text-xs text-slate-400">Loading research documents...</p>
+        </div>
+      ) : isError ? (
+        <div className="p-12 border border-red-900/40 bg-red-950/20 rounded-2xl text-center space-y-3">
+          <AlertCircle className="w-10 h-10 mx-auto text-red-400 stroke-[1.5]" />
+          <h4 className="text-sm font-medium text-red-200">Unable to load documents</h4>
+          <p className="text-xs text-red-300/80 max-w-sm mx-auto">
+            {(error as any)?.message || 'Failed to connect to the backend service.'}
+          </p>
+          <button
+            onClick={() => refetch()}
+            className="px-4 py-2 bg-red-900/40 hover:bg-red-800/50 border border-red-700/60 rounded-xl text-xs font-semibold text-red-200 transition"
+          >
+            Retry Connection
+          </button>
         </div>
       ) : filteredDocs.length === 0 ? (
         <div className="p-12 border border-dashed border-slate-800 rounded-2xl text-center space-y-3 bg-[#10172a]/30">
