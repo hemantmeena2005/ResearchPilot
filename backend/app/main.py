@@ -69,6 +69,18 @@ app.include_router(conversations_router, prefix="/api/v1")
 app.include_router(evaluation_router, prefix="/api/v1")
 
 
+@app.get("/", tags=["system"])
+@app.head("/", tags=["system"])
+async def root():
+    """Root endpoint for Render health probes and discovery."""
+    return {
+        "status": "online",
+        "service": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "docs": "/docs",
+    }
+
+
 @app.get("/api/v1/health", tags=["system"])
 async def health_check():
     """System health check endpoint."""
