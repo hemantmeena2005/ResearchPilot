@@ -6,16 +6,27 @@ interface CitationDrawerProps {
   citations: CitationItem[];
   selectedCitation: CitationItem | null;
   onSelectCitation: (citation: CitationItem | null) => void;
+  onClose?: () => void;
 }
 
 export const CitationDrawer: React.FC<CitationDrawerProps> = ({
   citations,
   selectedCitation,
   onSelectCitation,
+  onClose,
 }) => {
   if (citations.length === 0) {
     return (
-      <div className="w-80 border-l border-slate-800 bg-[#0d1322]/80 p-5 flex flex-col items-center justify-center text-center text-slate-500">
+      <div className="w-80 border-l border-slate-800 bg-[#0d1322]/80 p-5 flex flex-col items-center justify-center text-center text-slate-500 relative">
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 p-1 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/60 transition"
+            title="Hide Evidence Drawer"
+          >
+            ✕
+          </button>
+        )}
         <BookOpen className="w-8 h-8 mb-3 text-slate-600 stroke-[1.5]" />
         <p className="text-sm font-medium text-slate-400">Evidence Grounding</p>
         <p className="text-xs mt-1 text-slate-500 leading-relaxed">
@@ -34,9 +45,20 @@ export const CitationDrawer: React.FC<CitationDrawerProps> = ({
             Retrieved Evidence ({citations.length})
           </h3>
         </div>
-        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800/50">
-          Verified
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800/50">
+            Verified
+          </span>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+              title="Hide Evidence Drawer"
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-3">

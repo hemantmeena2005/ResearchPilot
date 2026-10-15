@@ -68,7 +68,7 @@ class ConversationModel(Base):
     created_at = Column(DateTime, default=utcnow)
     updated_at = Column(DateTime, default=utcnow, onupdate=utcnow)
 
-    messages = relationship("MessageModel", back_populates="conversation", cascade="all, delete-orphan")
+    messages = relationship("MessageModel", back_populates="conversation", cascade="all, delete-orphan", lazy="selectin")
 
 
 class MessageModel(Base):

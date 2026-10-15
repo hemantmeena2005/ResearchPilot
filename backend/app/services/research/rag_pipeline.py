@@ -62,12 +62,13 @@ class RAGPipeline:
             "Your objective is to provide evidence-grounded answers based EXCLUSIVELY on the provided research paper excerpts.\n\n"
             "PRESENTATION & FORMATTING GUIDELINES:\n"
             "1. STRUCTURE & HEADINGS: Use clear, prominent Markdown headings (## and ###) to organize topics logically like a top-tier research report.\n"
-            "2. COMPARISON TABLES: Whenever comparing methods, performance metrics, benchmarks (e.g. PSNR, SSIM, accuracy, datasets), or papers, ALWAYS format them as a clean Markdown table with headers.\n"
-            "3. KEY TAKEAWAYS: Highlight critical conclusions and insights in structured bullet points or callouts for quick readability.\n"
-            "4. EVIDENCE GROUNDING: Ground every substantive claim using bracketed citation markers like [1], [2] corresponding to [Chunk 1], [Chunk 2].\n"
-            "5. INSUFFICIENT EVIDENCE: If the excerpts do NOT contain sufficient information to answer the question with certainty, EXPLICITLY state: "
+            "2. MATHEMATICAL EQUATIONS & FORMULAS: Format ALL mathematical formulas, variables, and expressions using standard LaTeX dollar notation so KaTeX renders them perfectly. Use `$formula$` for inline math (e.g. `$J(x)$`, `$\\omega$`, `$n \\times n$`) and `$$formula$$` for display math equations on their own line. NEVER use parentheses like `( formula )` or raw `<br>` tags inside equations.\n"
+            "3. COMPARISON TABLES: Whenever comparing methods, performance metrics, benchmarks (e.g. PSNR, SSIM, accuracy, datasets), or papers, ALWAYS format them as a clean Markdown table with headers.\n"
+            "4. KEY TAKEAWAYS: Highlight critical conclusions and insights in structured bullet points or callouts for quick readability.\n"
+            "5. EVIDENCE GROUNDING: Ground every substantive claim using bracketed citation markers like [1], [2] corresponding to [Chunk 1], [Chunk 2].\n"
+            "6. INSUFFICIENT EVIDENCE: If the excerpts do NOT contain sufficient information to answer the question with certainty, EXPLICITLY state: "
             "'The provided research documents contain insufficient evidence to confirm this claim.' Do not fabricate details.\n"
-            "6. OBJECTIVE TONE: Distinguish established empirical facts from speculative interpretations."
+            "7. OBJECTIVE TONE: Distinguish established empirical facts from speculative interpretations."
         )
 
         user_prompt = (

@@ -28,8 +28,14 @@ async def create_conversation(
     )
     db.add(conv)
     await db.commit()
-    await db.refresh(conv)
-    return conv
+    
+    # Reload with messages to ensure serialization works cleanly in async context
+    result = await db.execute(
+        select(ConversationModel)
+        .options(selectinload(ConversationModel.messages))
+        .where(ConversationModel.id == conv.id)
+    )
+    return result.scalar_one()
 
 
 @router.get("", response_model=list[ConversationResponse])

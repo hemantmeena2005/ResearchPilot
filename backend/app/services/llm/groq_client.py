@@ -82,6 +82,10 @@ class GroqClientService:
 
             except RateLimitError as e:
                 logger.warning(f"Groq Rate limit hit on attempt {attempt + 1}: {e}")
+                # If requested tokens exceeded on specific model, fallback or reduce max_tokens
+                if "Limit 1000" in str(e) or "OTPM" in str(e):
+                    max_tokens = min(max_tokens, 950)
+                    target_model = "openai/gpt-oss-120b"
                 if attempt == retries - 1:
                     raise RuntimeError("Groq API quota exhausted or rate limit reached. Please try again shortly.")
                 time.sleep(delay)
