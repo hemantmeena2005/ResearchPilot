@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e "./backend[dev]"
+          pip install greenlet
+          
+      - name: Run Ruff Linting
+        run: |
+          ruff check backend/app
+          
+      - name: Generate evaluation test papers
+        run: |
+          python evaluation/generate_samples.py
+          
+      - name: Run Pytest Test Suite
+        env:
+          OMP_NUM_THREADS: "1"
+          KMP_DUPLICATE_LIB_OK: "TRUE"
+        run: |
+          PYTHONPATH=backend pytest backend/tests/ -v
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci || npm install
+        
+      - name: TypeScript type checking and build
+        working-directory: ./frontend
+        run: npm run build
