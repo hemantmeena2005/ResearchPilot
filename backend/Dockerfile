@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy pyproject.toml and install Python packages
-COPY pyproject.toml .
+# Copy application files (flexible for build context)
+COPY backend/pyproject.toml* pyproject.toml* ./
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
     fastapi>=0.115.0 \
@@ -28,8 +28,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
     httpx>=0.27.0 \
     numpy>=1.26.0
 
-# Copy application source code
-COPY app/ ./app/
+# Copy application code
+COPY backend/app* ./app_temp/
+RUN if [ -d ./app_temp/backend/app ]; then mv ./app_temp/backend/app ./app; elif [ -d ./app_temp/app ]; then mv ./app_temp/app ./app; else cp -r ./app_temp ./app; fi && rm -rf ./app_temp
 
 # Environment variables
 ENV PYTHONPATH=/app
