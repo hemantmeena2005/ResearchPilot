@@ -113,7 +113,10 @@ export const DocumentLibrary: React.FC = () => {
       {isLoading ? (
         <div className="flex flex-col items-center justify-center p-16 space-y-3">
           <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-          <p className="text-xs text-slate-400">Loading research documents...</p>
+          <p className="text-xs text-slate-300 font-medium">Loading research documents...</p>
+          <p className="text-[11px] text-slate-500 max-w-xs text-center">
+            If the backend is waking up from sleep, this may take up to 50 seconds.
+          </p>
         </div>
       ) : isError ? (
         <div className="p-12 border border-red-900/40 bg-red-950/20 rounded-2xl text-center space-y-3">
