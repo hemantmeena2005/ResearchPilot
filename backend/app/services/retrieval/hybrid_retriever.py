@@ -55,12 +55,12 @@ class HybridRetrievalService:
         chunk_map: dict[str, dict[str, Any]] = {}
 
         for rank, (meta, score) in enumerate(vector_results):
-            cid = meta["id"]
+            cid = str(meta.get("id") or meta.get("faiss_position") or f"vec_{rank}")
             chunk_map[cid] = meta
             fused_scores[cid] = fused_scores.get(cid, 0.0) + (1.0 / (rrf_constant + rank + 1))
 
         for rank, (meta, score) in enumerate(bm25_results):
-            cid = meta["id"]
+            cid = str(meta.get("id") or f"bm25_{rank}")
             chunk_map[cid] = meta
             fused_scores[cid] = fused_scores.get(cid, 0.0) + (1.0 / (rrf_constant + rank + 1))
 
