@@ -8,8 +8,8 @@ import type {
   EvaluationSummary,
 } from '../types';
 
-// Use VITE_API_URL if configured, otherwise fall back to relative path '/api/v1'
-const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') + '/api/v1';
+// Default to relative '/api/v1' so Vercel edge reverse proxy handles requests cleanly without CORS
+const API_BASE = (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : '') + '/api/v1';
 
 export const api = {
   // Document Operations
