@@ -18,21 +18,14 @@ class CrossEncoderReranker:
         return cls._instance
 
     def _ensure_model(self):
+        # On lightweight cloud instances (Render 512MB), avoid loading heavy PyTorch models on query
         if not self._initialized:
             self._initialized = True
-            try:
-                logger.info(f"Loading local Cross-Encoder reranker: {settings.RERANKER_MODEL} on {settings.DEVICE}...")
-                from sentence_transformers import CrossEncoder
-                self._model = CrossEncoder(settings.RERANKER_MODEL, device=settings.DEVICE)
-                logger.info("Cross-Encoder reranker loaded successfully.")
-            except Exception as e:
-                logger.warning(f"Could not initialize Cross-Encoder ({e}). Reranking will fall back gracefully.")
-                self._model = None
+            self._model = None
 
     @property
     def available(self) -> bool:
-        self._ensure_model()
-        return self._model is not None
+        return False
 
     def rerank(
         self,
