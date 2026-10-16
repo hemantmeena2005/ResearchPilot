@@ -27,8 +27,8 @@ class Settings(BaseSettings):
 
     # Groq LLM API
     GROQ_API_KEY: str = Field(default="", description="Groq API Key")
-    GROQ_MODEL: str = "openai/gpt-oss-120b"
-    GROQ_TIMEOUT_SECONDS: float = 45.0
+    GROQ_MODEL: str = "qwen/qwen3.8-27b"
+    GROQ_TIMEOUT_SECONDS: float = 30.0
     GROQ_MAX_RETRIES: int = 3
 
     # Pinecone Vector DB & Cloud Inference Embeddings
