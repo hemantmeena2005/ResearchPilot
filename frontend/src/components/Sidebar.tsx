@@ -207,9 +207,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              FAISS & BM25
+              Pinecone Vector DB
             </span>
-            <span className="text-slate-400">Local</span>
+            <span className="text-emerald-400 font-mono text-[10px]">Cloud</span>
           </div>
           <div className="flex items-center justify-between">
             <span>LLM Inference</span>

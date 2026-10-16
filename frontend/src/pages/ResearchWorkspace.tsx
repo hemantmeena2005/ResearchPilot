@@ -120,19 +120,51 @@ export const ResearchWorkspace: React.FC = () => {
     onSuccess: async ({ res, convId }) => {
       setQuery('');
 
-      // Refresh database messages from backend
-      await queryClient.invalidateQueries({ queryKey: ['conversation', convId] });
-      await queryClient.invalidateQueries({ queryKey: ['conversations'] });
+      // Instantly push assistant message into React Query cache for immediate rendering
+      const newAssistantMsg: ConversationMessage = {
+        id: 'asst-' + Date.now(),
+        role: 'assistant',
+        content: res.answer,
+        query_category: res.query_category,
+        citations: res.citations || [],
+        is_evidence_sufficient: res.is_evidence_sufficient,
+        latency_ms: res.latency_ms,
+        created_at: new Date().toISOString(),
+      };
 
-      // Clear optimistic messages since the authoritative messages are now in currentConversation
+      queryClient.setQueryData(['conversation', convId], (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          messages: [...(old.messages || []), newAssistantMsg],
+        };
+      });
+
+      // Clear optimistic user message now that data is in cache
       setOptimisticMessages([]);
+
+      // Invalidate in background to keep full consistency
+      queryClient.invalidateQueries({ queryKey: ['conversation', convId] });
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
 
       if (res.citations && res.citations.length > 0) {
         setSelectedCitation(res.citations[0]);
       }
     },
-    onError: (err) => {
+    onError: (err: any) => {
       console.error('Query error:', err);
+      // Clear optimistic pending state on error
+      setOptimisticMessages((prev) => [
+        ...prev,
+        {
+          id: 'err-' + Date.now(),
+          role: 'assistant',
+          content: `**Query Failed:** ${err?.message || 'Server took too long or encountered an error. Please try again.'}`,
+          citations: [],
+          is_evidence_sufficient: false,
+          created_at: new Date().toISOString(),
+        },
+      ]);
     },
   });
 
