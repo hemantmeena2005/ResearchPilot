@@ -41,14 +41,14 @@ async def lifespan(app: FastAPI):
         except Exception as e:
             logger.warning(f"Initial BM25 sync notice: {e}")
 
-    # Pre-warm local embedding model so PDF uploads index instantly
+    # Pre-warm embedding service (Pinecone Cloud Inference or local fallback)
     try:
         from app.services.embeddings.embedding_service import EmbeddingService
         embedder = EmbeddingService()
-        embedder._ensure_model()
-        logger.info("Pre-warmed EmbeddingService model for instant PDF indexing.")
+        embedder._ensure_client()
+        logger.info("Initialized EmbeddingService client for high-speed cloud indexing.")
     except Exception as e:
-        logger.warning(f"Embedding model pre-warm notice: {e}")
+        logger.warning(f"Embedding service initialization notice: {e}")
 
     yield
     logger.info("Shutting down ResearchPilot application.")

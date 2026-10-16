@@ -31,6 +31,14 @@ class Settings(BaseSettings):
     GROQ_TIMEOUT_SECONDS: float = 45.0
     GROQ_MAX_RETRIES: int = 3
 
+    # Pinecone Vector DB & Cloud Inference Embeddings
+    PINECONE_API_KEY: str = Field(
+        default="pcsk_24fkdK_D7xSnZESuPmhg8c3Hg8j87upid8Y4ciLuujPjNHX9ZycGQWfv8rCvDyduxgGtrw",
+        description="Pinecone API Key"
+    )
+    PINECONE_INDEX_NAME: str = "researchpilot"
+    PINECONE_EMBED_MODEL: str = "multilingual-e5-large"
+
     # Storage paths
     DATABASE_URL: str = "sqlite+aiosqlite:///./data/researchpilot.db"
     UPLOAD_DIR: str = "./data/uploads"

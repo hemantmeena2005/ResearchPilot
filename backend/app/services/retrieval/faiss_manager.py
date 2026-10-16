@@ -54,6 +54,18 @@ class FAISSIndexManager:
         if len(embeddings) == 0:
             return []
 
+        # Adjust index dimension dynamically if needed (e.g. switching between 384 and 1024)
+        embed_dim = embeddings.shape[1]
+        if self.index is None or (self.index.ntotal == 0 and self.index.d != embed_dim):
+            self.dimension = embed_dim
+            self.index = faiss.IndexFlatIP(self.dimension)
+        elif self.index.d != embed_dim:
+            # Dimension changed (e.g. from local 384 to cloud 1024) - reset index for new embedding space
+            logger.warning(f"Embedding dimension changed from {self.index.d} to {embed_dim}. Reinitializing FAISS index.")
+            self.dimension = embed_dim
+            self.index = faiss.IndexFlatIP(self.dimension)
+            self.metadata_entries = []
+
         start_pos = self.index.ntotal
         self.index.add(embeddings)
         assigned_positions = []

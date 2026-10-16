@@ -24,6 +24,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     faiss-cpu>=1.8.0 \
     rank-bm25>=0.2.2 \
     groq>=0.11.0 \
+    pinecone>=5.0.0 \
     python-multipart>=0.0.12 \
     httpx>=0.27.0 \
     numpy>=1.26.0
